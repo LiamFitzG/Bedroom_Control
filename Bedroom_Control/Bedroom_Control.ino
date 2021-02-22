@@ -1,11 +1,10 @@
 //Bedroom_Control
 
-//Version:  1.1
+//Version:  1.2
 //Features: 4 Channel relay control via digital output pins (connected to various appliances)
 //          Serial communication via Bluetooth Module to control relay pins using android application
-//Updates:  Constant variables changed to #define rather than using integers
-//          ie. all integer identities used through serial communication from the Bluetooth Module and 
-//          the Arduino and the pin numbers allocated to the various appliances
+//Updates:  Bluetooth conditional code moved from main loop to it's own function
+//          Bluetooth startup moved to it's own function
 //Date:     01/2021
 //Auther:   Liam Fitzgerald
 //------------------------------------------------------------------------------------------
@@ -55,10 +54,56 @@ void setup() {
 
 void loop() {
   if (Serial.available() > 0){                //Check if the bluetooth module is outputting data
-  Serial_Read = Serial.read();
+    Serial_Read = Serial.read();              //Read the data outputted by the Bluetooth Module and store in Serial_Read
+    BluetoothInput();
+  }
+}
+//------------------------------------------------------------------------------------------
 
-                                 
-    if (Serial_Read == Light_0_ON){           //Check if the ouput from the bluetooth module is Light_0_ON
+//Function Declarations
+
+void AppStartup(void){
+  if (digitalRead(Light_0) == LOW){       //Check the state of the Light_0 pin
+        Serial.println(1);                    //If Light_0 pin is Low, send integer to Bluetooth Module indicating Light_0 is on
+      }
+      else if (digitalRead(Light_0) == HIGH){
+        Serial.println(2);                    //If Light_0 pin is High, send integer to Bluetooth Module iundicating Light_0 is off
+      }
+
+      delay(1500);                            //Delay for 1,5 seconds to allow enough time for the integer to be read once sent by the Bluetooth Module
+
+      if (digitalRead(Light_1) == LOW){       //Same as above for Light_1
+        Serial.println(3);
+      }
+      else if (digitalRead(Light_1) == HIGH){
+        Serial.println(4);
+      }
+
+      delay(1500);
+
+      if (digitalRead(Fan) == LOW){           //Same as above for Fan
+        Serial.println(5);
+      }
+      else if (digitalRead(Fan) == HIGH){
+        Serial.println(6);
+      }
+
+      delay(1500);
+
+      if (digitalRead(Radio) == LOW){       //Same as above for Radio
+        Serial.println(7);
+      }
+      else if (digitalRead(Radio) == HIGH){
+        Serial.println(8);
+      }
+
+      delay(1500);
+
+      Serial.println(9);
+}
+
+void BluetoothInput(void){
+  if (Serial_Read == Light_0_ON){           //Check if the ouput from the bluetooth module is Light_0_ON
       digitalWrite(Light_0,LOW);              //Set Light_0 pin to a Low to turn on the Light_0 if the if statement is met
       Serial.println(1);                      //Send integer to Bluetooth Module indicating Light_0 is on
     }
@@ -103,43 +148,6 @@ void loop() {
 
 
     else if (Serial_Read == Startup){         //Initial conditions
-      if (digitalRead(Light_0) == LOW){       //Check the state of the Light_0 pin
-        Serial.println(1);                    //If Light_0 pin is Low, send integer to Bluetooth Module indicating Light_0 is on
-      }
-      else if (digitalRead(Light_0) == HIGH){
-        Serial.println(2);                    //If Light_0 pin is High, send integer to Bluetooth Module iundicating Light_0 is off
-      }
-
-      delay(1500);                            //Delay for 1,5 seconds to allow enough time for the integer to be read once sent by the Bluetooth Module
-
-      if (digitalRead(Light_1) == LOW){       //Same as above for Light_1
-        Serial.println(3);
-      }
-      else if (digitalRead(Light_1) == HIGH){
-        Serial.println(4);
-      }
-
-      delay(1500);
-
-      if (digitalRead(Fan) == LOW){           //Same as above for Fan
-        Serial.println(5);
-      }
-      else if (digitalRead(Fan) == HIGH){
-        Serial.println(6);
-      }
-
-      delay(1500);
-
-      if (digitalRead(Radio) == LOW){       //Same as above for Radio
-        Serial.println(7);
-      }
-      else if (digitalRead(Radio) == HIGH){
-        Serial.println(8);
-      }
-
-      delay(1500);
-
-      Serial.println(9);
+      AppStartup();
     }
-  }
 }

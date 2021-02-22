@@ -1,40 +1,42 @@
 //Bedroom_Control
 
-//Version:  1.0
+//Version:  1.1
 //Features: 4 Channel relay control via digital output pins (connected to various appliances)
 //          Serial communication via Bluetooth Module to control relay pins using android application
-//Updates:  All above features were added
+//Updates:  Constant variables changed to #define rather than using integers
+//          ie. all integer identities used through serial communication from the Bluetooth Module and 
+//          the Arduino and the pin numbers allocated to the various appliances
 //Date:     01/2021
 //Auther:   Liam Fitzgerald
 //------------------------------------------------------------------------------------------
 
 //Assign pin numbers to each external appliance connected to realy board
 
-unsigned int Light_0 = 8;     //Set Light_0 to digital pin 8
-unsigned int Light_1 = 9;     //Set Light_1 to digital pin 9
-unsigned int Fan = 10;        //Set Computer power switch to digital pin 10
-unsigned int Radio = 11;      //Set Radio power switch to digital pin 11
+#define Light_0 8     //Set Light_0 to digital pin 8
+#define Light_1 9     //Set Light_1 to digital pin 9
+#define Fan 10        //Set Computer power switch to digital pin 10
+#define Radio 11      //Set Radio power switch to digital pin 11
 //------------------------------------------------------------------------------------------
 
 //Correspond integer value received via serial communication from the Bluetooth Module
 //with desired control parameter 
 //eg. Serial communication received: 10; Control Parameter: Turn on Light 0
 
-unsigned int Light_0_ON = 10;
-unsigned int Light_0_OFF = 15;
+#define Light_0_ON 10
+#define Light_0_OFF 15
 
-unsigned int Light_1_ON = 20;
-unsigned int Light_1_OFF = 25;
+#define Light_1_ON 20
+#define Light_1_OFF 25
 
-unsigned int Fan_ON = 30;
-unsigned int Fan_OFF = 35;
+#define Fan_ON 30
+#define Fan_OFF 35
 
-unsigned int Radio_ON = 40;
-unsigned int Radio_OFF = 45;
+#define Radio_ON 40
+#define Radio_OFF 45
 
-unsigned int All_OFF = 50;
+#define All_OFF 50
 
-unsigned int Startup = 100;
+#define Startup 100
 //------------------------------------------------------------------------------------------
 
 //Global variables
